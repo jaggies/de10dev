@@ -1,0 +1,6 @@
+DATE = "20:06:16 June 02, 2017"
+QUARTUS_VERSION = "16.0.2"
+
+# Revisions
+
+PROJECT_REVISION = "leds"

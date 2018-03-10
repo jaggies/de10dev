@@ -1,0 +1,6 @@
+SubDir TOP hdmi ;
+
+QuartusProject hdmi : hdmi.qpf ;
+
+QuartusSource hdmi : hdmi.v ;
+

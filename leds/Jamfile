@@ -1,0 +1,6 @@
+SubDir TOP leds ;
+
+QuartusProject leds : leds.qpf ;
+
+QuartusSource leds : leds.v ;
+

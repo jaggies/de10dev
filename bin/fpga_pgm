@@ -1,0 +1,5 @@
+#!/bin/bash 
+export DEVICE=2 # 1 for DE0, 2 for DE10
+export QUARTUS_ROOTDIR=~/intelFPGA_lite/16.1/quartus
+export QUARTUS_BIN=$QUARTUS_ROOTDIR/bin
+$QUARTUS_BIN/quartus_pgm -m jtag -c 1 -o "p;$1@$DEVICE"

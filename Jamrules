@@ -1,0 +1,55 @@
+SubDir TOP ;
+
+QUARTUS = quartus_sh ;
+
+rule UserObject {
+    switch $(>)
+    {
+        case *.qpf   : C++ $(<) : $(<:S=$(LEXGENC++)) ;
+                        LexGenC++ $(<:S=$(LEXGENC++)) : $(>) ;
+        case *      : ECHO "unknown suffix on" $(>) ;
+    }
+}
+
+rule QuartusProject
+{
+    local project_file = $(>) ;
+    local project = $(<) ;
+    local target = $(<:S=.sof) ;
+    local tmps = jdi map.rpt map.summary pin sld sof sta.rpt sta.summary sof
+		asm.rpt done fit.rpt fit.smsg fit.summary flow.rpt ;
+    NOTFILE $(project) ;
+    NOTFILE $(project)-source ;
+    Depends $(project) : $(target) ;
+    Depends $(target) : $(project_file) ;
+    Depends $(target) : $(project)-source ;
+    Depends all : $(project) ;
+
+    # auto generate flashing rule
+    Flash $(project) : $(target) ;
+
+    Clean clean : $(<) $(<:S=.$(tmps)) c5_pin_model_dump.txt ;
+}
+
+rule QuartusSource
+{
+    Depends $(<)-source : $(>) ;
+}
+
+actions QuartusProject
+{
+    $(QUARTUS) --flow compile $(<)
+}
+
+rule Flash
+{
+    local flash_target = $(<)-flash ;
+    NOTFILE $(flash_target) ;
+    Depends $(flash_target) : $(>) ;
+    Depends flash : $(flash_target) ;
+}
+
+actions Flash
+{
+    $(TOP)/bin/fpga_pgm $(>) ;
+}
